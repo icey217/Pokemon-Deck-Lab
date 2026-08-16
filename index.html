@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0,user-scalable=no">
+
 <meta name="theme-color" content="#172033">
 
 <title>Pokémon Deck Lab</title>
@@ -15,26 +18,26 @@
 :root {
   --navy: #172033;
   --blue: #4169d8;
-  --blue-light: #edf3ff;
-  --background: #eef1f6;
+  --blue2: #2f5dcc;
+  --bg: #eef1f6;
   --white: #ffffff;
   --text: #172033;
-  --muted: #68758d;
-  --border: #d6deeb;
-  --green: #219447;
-  --red: #d94b4b;
+  --muted: #68768e;
+  --red: #d14d4d;
+  --green: #299447;
+  --border: #d8dfeb;
+  --lightblue: #edf3ff;
 }
 
 body {
   margin: 0;
-  background: var(--background);
-  color: var(--text);
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
-    Arial,
     sans-serif;
+  background: var(--bg);
+  color: var(--text);
 }
 
 button,
@@ -46,16 +49,17 @@ textarea {
 
 button {
   cursor: pointer;
+  border: 0;
 }
 
 .header {
   background: var(--navy);
   color: white;
-  padding: 25px 18px 20px;
+  padding: 34px 22px 25px;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 5px 20px #0003;
+  z-index: 50;
+  box-shadow: 0 8px 25px rgba(0,0,0,.18);
 }
 
 .header-inner {
@@ -63,354 +67,417 @@ button {
   margin: auto;
 }
 
-.title {
+.brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
 }
 
-.logo {
-  font-size: 42px;
+.brand-icon {
+  width: 58px;
+  height: 72px;
+  background: #eee6d5;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
 }
 
-h1 {
+.brand h1 {
   margin: 0;
-  font-size: 36px;
+  font-size: clamp(34px, 7vw, 64px);
+  line-height: 1;
 }
 
 .subtitle {
-  margin-top: 6px;
-  color: #c7cfde;
+  color: #c8d0df;
+  font-size: clamp(18px, 4vw, 30px);
+  margin-top: 20px;
 }
 
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   overflow-x: auto;
-  margin-top: 22px;
+  margin-top: 28px;
+  padding-bottom: 2px;
 }
 
 .nav button {
-  border: 0;
-  padding: 14px 23px;
-  border-radius: 16px;
+  flex: 0 0 auto;
+  padding: 18px 30px;
+  border-radius: 18px;
   background: var(--blue);
   color: white;
   font-weight: 800;
-  white-space: nowrap;
+  font-size: 20px;
 }
 
 .nav button.active {
   background: white;
-  color: var(--navy);
+  color: var(--text);
 }
 
-main {
+.container {
   max-width: 1200px;
   margin: auto;
-  padding: 24px 16px 80px;
+  padding: 25px 16px 80px;
 }
 
 .panel {
   background: white;
-  border: 1px solid var(--border);
-  border-radius: 25px;
-  padding: 23px;
-  margin-bottom: 20px;
-  box-shadow: 0 5px 20px #17203312;
+  border-radius: 28px;
+  padding: 28px;
+  margin-bottom: 22px;
+  box-shadow: 0 5px 18px rgba(20,30,50,.08);
 }
 
 h2 {
-  margin-top: 0;
-  font-size: 30px;
+  font-size: 38px;
+  margin: 0 0 24px;
+}
+
+h3 {
+  font-size: 26px;
 }
 
 .format-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
 }
 
 .format {
-  border: 5px solid var(--border);
-  border-radius: 22px;
+  border: 6px solid var(--border);
   background: white;
-  padding: 25px;
+  border-radius: 28px;
+  padding: 28px;
   text-align: left;
 }
 
-.format.active {
+.format.selected {
   border-color: var(--blue);
-  background: var(--blue-light);
+  background: var(--lightblue);
 }
 
 .format strong {
   display: block;
-  color: #1687ee;
-  font-size: 31px;
-  margin-bottom: 8px;
+  color: #2380e9;
+  font-size: 36px;
 }
 
 .format span {
+  display: block;
   color: var(--muted);
+  font-size: 18px;
+  margin-top: 10px;
 }
 
-.search {
+.search-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+}
+
+input,
+select,
+textarea {
   width: 100%;
+  border: 4px solid var(--border);
+  border-radius: 18px;
   padding: 17px;
-  border: 3px solid var(--border);
-  border-radius: 17px;
+  background: white;
+  color: var(--text);
   outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--blue);
+}
+
+.primary {
+  background: var(--blue);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 17px;
+  font-weight: 800;
+}
+
+.secondary {
+  background: #e9edf5;
+  color: var(--text);
+  padding: 14px 20px;
+  border-radius: 15px;
+  font-weight: 700;
+}
+
+.danger {
+  background: var(--red);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 15px;
+  font-weight: 800;
+}
+
+.success {
+  background: var(--green);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 15px;
+  font-weight: 800;
 }
 
 .filters {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-top: 12px;
-}
-
-select {
-  width: 100%;
-  padding: 15px;
-  border: 3px solid var(--border);
-  border-radius: 15px;
-  background: white;
-}
-
-.btn {
-  border: 0;
-  border-radius: 14px;
-  padding: 13px 19px;
-  background: var(--blue);
-  color: white;
-  font-weight: 800;
-}
-
-.btn.green {
-  background: var(--green);
-}
-
-.btn.red {
-  background: var(--red);
-}
-
-.btn.gray {
-  background: #e7ebf3;
-  color: var(--text);
+  gap: 12px;
+  margin-top: 15px;
 }
 
 .status {
   padding: 18px;
-  border-radius: 17px;
-  margin-bottom: 15px;
-}
-
-.status.info {
-  background: #eaf1ff;
-  color: #2853a9;
-}
-
-.status.success {
-  background: #e4f6eb;
-  color: #176d39;
+  border-radius: 18px;
+  margin: 18px 0;
+  background: var(--lightblue);
+  color: #3159a9;
+  font-weight: 700;
 }
 
 .status.error {
-  background: #fde7e7;
-  color: #983636;
+  background: #fdeaea;
+  color: #963c3c;
 }
 
-.status strong {
-  display: block;
-  font-size: 20px;
-  margin-bottom: 5px;
+.status.success {
+  background: #e8f7ec;
+  color: #237b3b;
 }
 
-.card-grid {
+.results {
   display: grid;
-  grid-template-columns:
-    repeat(auto-fill, minmax(210px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
 }
 
 .card {
-  border: 1px solid var(--border);
-  border-radius: 17px;
-  overflow: hidden;
   background: white;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,.07);
 }
 
 .card img {
   display: block;
   width: 100%;
-  aspect-ratio: 0.716;
-  object-fit: contain;
-  background: #f4f5f7;
+  background: #f2f4f8;
 }
 
 .card-body {
-  padding: 12px;
+  padding: 13px;
 }
 
 .card-name {
-  font-weight: 900;
-  font-size: 17px;
-}
-
-.meta {
-  margin-top: 6px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.rarity {
-  display: inline-block;
-  background: #edf0f5;
-  border-radius: 8px;
-  padding: 5px 8px;
-  margin-top: 7px;
-  font-size: 12px;
+  font-size: 18px;
   font-weight: 800;
 }
 
-.card-actions {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
+.card-meta {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 5px;
 }
 
-.card-actions button {
-  flex: 1;
-  border: 0;
-  padding: 9px;
+.card-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.card-buttons button {
+  padding: 9px 5px;
   border-radius: 10px;
+  font-weight: 800;
   background: var(--blue);
   color: white;
-  font-weight: 800;
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+.card-buttons button:last-child {
+  background: #e9edf5;
+  color: var(--text);
 }
 
-.deck-row {
+.deck-top {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  margin-bottom: 8px;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.deck-row img {
-  width: 52px;
-  height: 70px;
-  object-fit: contain;
-}
-
-.deck-info {
-  flex: 1;
-}
-
-.deck-name {
+.deck-count {
+  font-size: 34px;
   font-weight: 900;
 }
 
-.deck-meta {
-  color: var(--muted);
-  font-size: 13px;
+.progress {
+  height: 14px;
+  background: #e3e7ee;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+
+.progress > div {
+  height: 100%;
+  background: var(--blue);
+  width: 0%;
+  transition: width .25s;
+}
+
+.deck-list {
+  display: grid;
+  gap: 9px;
+}
+
+.deck-item {
+  display: grid;
+  grid-template-columns: 55px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 8px;
+}
+
+.deck-item img {
+  width: 48px;
+  border-radius: 7px;
 }
 
 .qty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  font-weight: 900;
+  font-size: 19px;
 }
 
-.qty button {
-  width: 34px;
-  height: 34px;
-  border: 0;
-  border-radius: 9px;
-  background: #e9edf5;
-  font-weight: 900;
+.deck-name {
+  font-weight: 800;
+}
+
+.deck-info {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.import-box {
+  min-height: 230px;
+}
+
+.example {
+  white-space: pre-wrap;
+  background: #f3f5f8;
+  padding: 18px;
+  border-radius: 15px;
+  color: #4d596d;
 }
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4,1fr);
+  gap: 15px;
 }
 
 .stat {
-  background: #f5f7fb;
-  padding: 20px;
+  background: #f3f6fb;
   border-radius: 18px;
+  padding: 22px;
   text-align: center;
 }
 
-.stat-number {
+.stat strong {
+  display: block;
+  font-size: 35px;
   color: var(--blue);
-  font-size: 40px;
-  font-weight: 900;
-}
-
-.stat-label {
-  color: var(--muted);
-}
-
-textarea {
-  width: 100%;
-  min-height: 280px;
-  padding: 16px;
-  border: 3px solid var(--border);
-  border-radius: 17px;
-  resize: vertical;
 }
 
 .hidden {
   display: none !important;
 }
 
-.loading {
-  text-align: center;
-  padding: 40px;
+.small {
   color: var(--muted);
+  font-size: 14px;
 }
 
-@media(max-width:750px) {
-  h1 {
-    font-size: 29px;
-  }
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 25px;
+}
 
+.pagination button {
+  padding: 12px 20px;
+  border-radius: 13px;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+}
+
+@media(max-width:800px) {
   .format-grid,
   .filters,
   .stats {
     grid-template-columns: 1fr 1fr;
   }
+
+  .search-row {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    padding: 20px;
+    border-radius: 22px;
+  }
 }
 
-@media(max-width:520px) {
+@media(max-width:550px) {
+  .header {
+    padding: 28px 15px 20px;
+  }
+
+  .brand-icon {
+    width: 48px;
+    height: 60px;
+  }
+
   .format-grid,
   .filters,
   .stats {
     grid-template-columns: 1fr;
   }
 
-  .card-grid {
+  .results {
     grid-template-columns: repeat(2, 1fr);
-    gap: 9px;
+    gap: 10px;
   }
 
   .card-name {
-    font-size: 14px;
+    font-size: 15px;
+  }
+
+  .card-meta {
+    font-size: 12px;
+  }
+
+  .nav button {
+    padding: 15px 20px;
+    font-size: 17px;
   }
 }
 </style>
@@ -419,445 +486,344 @@ textarea {
 <body>
 
 <header class="header">
+  <div class="header-inner">
 
-<div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🃏</div>
 
-<div class="title">
+      <div>
+        <h1>Pokémon Deck Lab</h1>
+        <div class="subtitle">
+          All Sets • Standard • Expanded • Deck Builder
+        </div>
+      </div>
+    </div>
 
-<div class="logo">🃏</div>
+    <div class="nav">
+      <button id="navLibrary"
+              class="active"
+              onclick="showPage('library')">
+        Card Library
+      </button>
 
-<div>
+      <button id="navDeck"
+              onclick="showPage('deck')">
+        Deck Builder
+      </button>
 
-<h1>Pokémon Deck Lab</h1>
+      <button id="navImport"
+              onclick="showPage('import')">
+        Import
+      </button>
 
-<div class="subtitle">
-All Sets • Standard • Expanded • Deck Builder
-</div>
+      <button id="navBattle"
+              onclick="showPage('battle')">
+        Battle
+      </button>
 
-</div>
+      <button id="navStats"
+              onclick="showPage('stats')">
+        Stats
+      </button>
+    </div>
 
-</div>
-
-<nav class="nav">
-
-<button class="active" data-page="libraryPage">
-Card Library
-</button>
-
-<button data-page="deckPage">
-Deck Builder
-</button>
-
-<button data-page="importPage">
-Import
-</button>
-
-<button data-page="statsPage">
-Stats
-</button>
-
-</nav>
-
-</div>
-
+  </div>
 </header>
 
+<main class="container">
 
-<main>
+<!-- ================= LIBRARY ================= -->
 
+<section id="page-library">
 
-<section class="panel">
+  <div class="panel">
 
-<h2>Card Database</h2>
+    <h2>Card Database</h2>
 
-<div
-class="status info"
-id="databaseStatus"
->
+    <div id="apiStatus" class="status">
+      Ready. Search for any Pokémon card.
+    </div>
 
-<strong>
-Loading database...
-</strong>
+    <div class="format-grid">
 
-The app is loading the Pokémon card database.
+      <button id="standardFormat"
+              class="format selected"
+              onclick="setFormat('standard')">
+        <strong>Standard</strong>
+        <span>
+          Search cards currently legal in Standard.
+        </span>
+      </button>
 
-</div>
+      <button id="expandedFormat"
+              class="format"
+              onclick="setFormat('expanded')">
+        <strong>Expanded</strong>
+        <span>
+          Search cards legal in Expanded.
+        </span>
+      </button>
 
+    </div>
 
-<div class="format-grid">
+  </div>
 
-<button
-class="format active"
-id="standardFormat"
->
+  <div class="panel">
 
-<strong>
-Standard
-</strong>
+    <h2>Search Cards</h2>
 
-<span>
-Cards legal in the current Standard format
-</span>
+    <div class="search-row">
 
-</button>
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search Pokémon, Trainer, Energy, set, number or ID..."
+        autocomplete="off"
+      >
 
+      <button class="primary"
+              onclick="searchCards(1)">
+        Search
+      </button>
 
-<button
-class="format"
-id="expandedFormat"
->
+    </div>
 
-<strong>
-Expanded
-</strong>
+    <div class="filters">
 
-<span>
-Cards legal in Expanded
-</span>
+      <select id="typeFilter">
+        <option value="">All Types</option>
+        <option>Pokémon</option>
+        <option>Trainer</option>
+        <option>Energy</option>
+      </select>
 
-</button>
+      <select id="rarityFilter">
+        <option value="">All Rarities</option>
+        <option>Common</option>
+        <option>Uncommon</option>
+        <option>Rare</option>
+        <option>Double Rare</option>
+        <option>Ultra Rare</option>
+        <option>Illustration Rare</option>
+        <option>Special Illustration Rare</option>
+        <option>Hyper Rare</option>
+      </select>
 
-</div>
+      <select id="setFilter">
+        <option value="">All Sets</option>
+      </select>
 
-<br>
+      <select id="sortFilter">
+        <option value="name">Name</option>
+        <option value="number">Card Number</option>
+        <option value="-set.releaseDate">Newest Set</option>
+        <option value="set.releaseDate">Oldest Set</option>
+      </select>
 
-<button
-class="btn gray"
-id="reloadDatabase"
->
-Reload Database
-</button>
+    </div>
 
-</section>
+    <div id="results" class="results"></div>
 
+    <div class="pagination">
+      <button onclick="previousPage()">Previous</button>
+      <span id="pageText" class="small"></span>
+      <button onclick="nextPage()">Next</button>
+    </div>
 
-<section id="libraryPage">
-
-<div class="panel">
-
-<h2>
-Card Library
-</h2>
-
-<input
-class="search"
-id="search"
-placeholder="Search Pokémon, Trainer, Energy, set, number, rarity or card ID..."
->
-
-<div class="filters">
-
-<select id="typeFilter">
-
-<option value="">
-All Card Types
-</option>
-
-<option value="Pokémon">
-Pokémon
-</option>
-
-<option value="Trainer">
-Trainer
-</option>
-
-<option value="Energy">
-Energy
-</option>
-
-</select>
-
-
-<select id="rarityFilter">
-
-<option value="">
-All Rarities
-</option>
-
-</select>
-
-
-<select id="setFilter">
-
-<option value="">
-All Sets
-</option>
-
-</select>
-
-
-<select id="sortFilter">
-
-<option value="set">
-Set + Number
-</option>
-
-<option value="name">
-Name
-</option>
-
-<option value="rarity">
-Rarity
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<div id="results">
-</div>
-
-<div class="pagination">
-
-<button
-class="btn gray"
-id="previous"
->
-Previous
-</button>
-
-<span id="pageNumber">
-Page 1
-</span>
-
-<button
-class="btn gray"
-id="next"
->
-Next
-</button>
-
-</div>
-
-</div>
+  </div>
 
 </section>
 
 
-<section
-id="deckPage"
-class="hidden"
->
+<!-- ================= DECK ================= -->
 
-<div class="panel">
+<section id="page-deck" class="hidden">
 
-<h2>
-Deck Builder
-</h2>
+  <div class="panel">
 
-<div class="stats">
+    <div class="deck-top">
 
-<div class="stat">
-<div
-class="stat-number"
-id="deckCount"
->
-0
-</div>
+      <div>
+        <h2>Your Deck</h2>
+        <div id="deckCount"
+             class="deck-count">
+          0 / 60 cards
+        </div>
+      </div>
 
-<div class="stat-label">
-Cards
-</div>
-</div>
+      <div>
+        <button class="secondary"
+                onclick="clearDeck()">
+          Clear
+        </button>
 
+        <button class="success"
+                onclick="exportDeck()">
+          Export
+        </button>
+      </div>
 
-<div class="stat">
-<div
-class="stat-number"
-id="pokemonCount"
->
-0
-</div>
+    </div>
 
-<div class="stat-label">
-Pokémon
-</div>
-</div>
+    <div class="progress">
+      <div id="deckProgress"></div>
+    </div>
 
+    <div id="deckWarning" class="status">
+      Your deck is empty.
+    </div>
 
-<div class="stat">
-<div
-class="stat-number"
-id="trainerCount"
->
-0
-</div>
+    <div id="deckList" class="deck-list"></div>
 
-<div class="stat-label">
-Trainer
-</div>
-</div>
-
-
-<div class="stat">
-<div
-class="stat-number"
-id="energyCount"
->
-0
-</div>
-
-<div class="stat-label">
-Energy
-</div>
-</div>
-
-</div>
-
-<br>
-
-<div id="validation">
-</div>
-
-</div>
-
-
-<div class="panel">
-
-<h2>
-Your Deck
-</h2>
-
-<div id="deckList">
-</div>
-
-<br>
-
-<button
-class="btn red"
-id="clearDeck"
->
-Clear Deck
-</button>
-
-</div>
+  </div>
 
 </section>
 
 
-<section
-id="importPage"
-class="hidden"
->
+<!-- ================= IMPORT ================= -->
 
-<div class="panel">
+<section id="page-import" class="hidden">
 
-<h2>
-Import Deck
-</h2>
+  <div class="panel">
 
-<p>
-Paste a Limitless-style deck list below.
-</p>
+    <h2>Import Deck</h2>
 
-<textarea
-id="importText"
-placeholder="Example:
+    <p class="small">
+      Paste a Pokémon TCG deck list below.
+      The importer accepts common text deck-list formats.
+    </p>
 
-4 Charizard ex MEG 125
-2 Charmander MEG 45
-4 Ultra Ball SVI 196
-2 Boss's Orders PAL 172
-10 Fire Energy"
-></textarea>
+    <textarea
+      id="importText"
+      class="import-box"
+      placeholder="Example:
 
-<br>
-<br>
+Pokémon - 12
+4 Charizard ex
+4 Charmander
+4 Pidgeot ex
 
-<button
-class="btn green"
-id="importDeck"
->
-Import Deck
-</button>
+Trainer - 32
+4 Ultra Ball
+4 Nest Ball
 
-<button
-class="btn gray"
-id="loadExample"
->
-Example
-</button>
+Energy - 16
+8 Fire Energy
+8 Double Turbo Energy"
+    ></textarea>
 
-<div id="importResult">
-</div>
+    <br><br>
 
-</div>
+    <button class="primary"
+            onclick="importDeck()">
+      Import Deck
+    </button>
+
+    <button class="secondary"
+            onclick="loadExample()">
+      Example
+    </button>
+
+    <div id="importStatus"></div>
+
+  </div>
 
 </section>
 
 
-<section
-id="statsPage"
-class="hidden"
->
+<!-- ================= BATTLE ================= -->
 
-<div class="panel">
+<section id="page-battle" class="hidden">
 
-<h2>
-Deck Statistics
-</h2>
+  <div class="panel">
 
-<div class="stats">
+    <h2>Battle Simulator</h2>
 
-<div class="stat">
-<div
-class="stat-number"
-id="sCards"
->
-0
-</div>
-<div class="stat-label">
-Cards
-</div>
-</div>
+    <div class="stats">
+
+      <div class="stat">
+        <strong id="playerHP">100</strong>
+        Player HP
+      </div>
+
+      <div class="stat">
+        <strong id="enemyHP">100</strong>
+        Opponent HP
+      </div>
+
+      <div class="stat">
+        <strong id="turn">1</strong>
+        Turn
+      </div>
+
+      <div class="stat">
+        <strong id="wins">0</strong>
+        Wins
+      </div>
+
+    </div>
+
+    <br>
+
+    <button class="primary"
+            onclick="attack()">
+      🔥 Attack
+    </button>
+
+    <button class="secondary"
+            onclick="heal()">
+      ❤️ Heal
+    </button>
+
+    <button class="danger"
+            onclick="resetBattle()">
+      Reset Battle
+    </button>
+
+    <div id="battleLog"
+         class="status"
+         style="margin-top:20px">
+      Battle ready.
+    </div>
+
+  </div>
+
+</section>
 
 
-<div class="stat">
-<div
-class="stat-number"
-id="sPokemon"
->
-0
-</div>
-<div class="stat-label">
-Pokémon
-</div>
-</div>
+<!-- ================= STATS ================= -->
 
+<section id="page-stats" class="hidden">
 
-<div class="stat">
-<div
-class="stat-number"
-id="sTrainer"
->
-0
-</div>
-<div class="stat-label">
-Trainer
-</div>
-</div>
+  <div class="panel">
 
+    <h2>Deck Stats</h2>
 
-<div class="stat">
-<div
-class="stat-number"
-id="sEnergy"
->
-0
-</div>
-<div class="stat-label">
-Energy
-</div>
-</div>
+    <div class="stats">
 
-</div>
+      <div class="stat">
+        <strong id="pokemonCount">0</strong>
+        Pokémon
+      </div>
 
-</div>
+      <div class="stat">
+        <strong id="trainerCount">0</strong>
+        Trainers
+      </div>
+
+      <div class="stat">
+        <strong id="energyCount">0</strong>
+        Energy
+      </div>
+
+      <div class="stat">
+        <strong id="uniqueCount">0</strong>
+        Unique
+      </div>
+
+    </div>
+
+  </div>
 
 </section>
 
@@ -865,1449 +831,1530 @@ Energy
 
 
 <script>
+/* =========================================================
+   POKÉMON DECK LAB
+   ========================================================= */
 
-const API =
-"https://api.pokemontcg.io/v2/cards";
+/*
+  IMPORTANT:
 
-let cards = [];
+  This application DOES NOT download every card on startup.
 
-let filtered = [];
+  Instead:
+    1. The app opens immediately.
+    2. You search for a card.
+    3. The API returns only the cards needed.
+    4. Standard / Expanded legality is applied server-side.
+    5. Set ID, card number and unique card ID are preserved.
 
-let page = 1;
+  The Pokémon TCG API supports pageSize up to 250.
+*/
 
-const PAGE_SIZE = 50;
+
+const API = "https://api.pokemontcg.io/v2";
 
 let format = "standard";
 
-let deck = {};
-
-
-function norm(value) {
-
-return String(value || "")
-.toLowerCase()
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g, "")
-.trim();
-
-}
-
-
-function esc(value) {
-
-return String(value ?? "")
-.replaceAll("&", "&amp;")
-.replaceAll("<", "&lt;")
-.replaceAll(">", "&gt;")
-.replaceAll('"', "&quot;")
-.replaceAll("'", "&#039;");
-
-}
-
-
-/*
-Rarity display.
-
-Common       ● Black
-Uncommon     ◆ Black
-Rare         ★ Black
-Double Rare  ★★ Black
-Ultra Rare   ★★ Silver
-Illustration ★ Gold
-Special IR   ★★ Gold
-Hyper Rare   ★★★ Gold
-*/
-
-function rarityDisplay(rarity) {
-
-const r = norm(rarity);
-
-if (r.includes("hyper rare"))
-return "★★★ Gold";
-
-if (r.includes("special illustration rare"))
-return "★★ Gold";
-
-if (r.includes("illustration rare"))
-return "★ Gold";
-
-if (r.includes("ultra rare"))
-return "★★ Silver";
-
-if (r.includes("double rare"))
-return "★★ Black";
-
-if (r === "rare")
-return "★ Black";
-
-if (r.includes("uncommon"))
-return "◆ Black";
-
-if (r.includes("common"))
-return "● Black";
-
-return rarity || "Unknown";
-
-}
-
-
-function cardType(card) {
-
-if (
-card.supertype === "Trainer"
-)
-return "Trainer";
-
-if (
-card.supertype === "Energy"
-)
-return "Energy";
-
-return "Pokémon";
-
-}
-
-
-function isLegal(card) {
-
-return (
-card.legalities &&
-card.legalities[format] === true
-);
-
-}
-
-
-/*
-Some API versions use:
-
-{
-  "standard": "Legal"
-}
-
-Others may use:
-
-{
-  "standard": true
-}
-*/
-
-function isLegal(card) {
-
-const value =
-card.legalities?.[format];
-
-return (
-value === true ||
-value === "Legal"
-);
-
-}
-
-
-async function loadDatabase() {
-
-const status =
-document.getElementById(
-"databaseStatus"
-);
-
-status.className =
-"status info";
-
-status.innerHTML =
-`
-<strong>
-Loading card database...
-</strong>
-
-Downloading the complete Pokémon card database.
-`;
-
-try {
-
-const allCards = [];
-
 let currentPage = 1;
+let lastSearch = "";
+let lastTotal = 0;
 
-while (true) {
+let deck = [];
 
-const url =
-`${API}?page=${currentPage}&pageSize=250`;
+let battle = {
+  playerHP: 100,
+  enemyHP: 100,
+  turn: 1,
+  wins: 0
+};
 
-const response =
-await fetch(url);
 
-if (!response.ok) {
+/* =========================================================
+   PAGE NAVIGATION
+   ========================================================= */
 
-throw new Error(
-"Card API returned HTTP " +
-response.status
-);
+function showPage(page) {
 
-}
+  const pages = [
+    "library",
+    "deck",
+    "import",
+    "battle",
+    "stats"
+  ];
 
-const data =
-await response.json();
+  pages.forEach(name => {
+    document
+      .getElementById("page-" + name)
+      .classList.toggle("hidden", name !== page);
+  });
 
-if (
-!data.data ||
-!data.data.length
-) {
-break;
-}
+  document
+    .querySelectorAll(".nav button")
+    .forEach(button => button.classList.remove("active"));
 
-allCards.push(
-...data.data
-);
+  const nav = document.getElementById(
+    "nav" + page.charAt(0).toUpperCase() + page.slice(1)
+  );
 
-if (
-data.totalCount &&
-allCards.length >=
-data.totalCount
-) {
-break;
-}
+  if (nav) nav.classList.add("active");
 
-currentPage++;
-
-if (currentPage > 100) {
-break;
-}
-
-}
-
-cards = allCards;
-
-populateFilters();
-
-applyFilters();
-
-status.className =
-"status success";
-
-status.innerHTML =
-`
-<strong>
-Database loaded
-</strong>
-
-${cards.length.toLocaleString()}
-cards loaded.
-`;
-
-}
-catch (error) {
-
-console.error(error);
-
-status.className =
-"status error";
-
-status.innerHTML =
-`
-<strong>
-Database failed to load
-</strong>
-
-${esc(error.message)}
-
-<br><br>
-
-Check your internet connection and press
-Reload Database.
-`;
-
-}
-
+  if (page === "stats") updateStats();
 }
 
 
-function populateFilters() {
+/* =========================================================
+   FORMAT
+   ========================================================= */
 
-const sets =
-new Map();
+function setFormat(newFormat) {
 
-const rarities =
-new Set();
+  format = newFormat;
 
-cards.forEach(card => {
+  document
+    .getElementById("standardFormat")
+    .classList.toggle(
+      "selected",
+      format === "standard"
+    );
 
-if (
-card.set?.id
-) {
+  document
+    .getElementById("expandedFormat")
+    .classList.toggle(
+      "selected",
+      format === "expanded"
+    );
 
-sets.set(
-card.set.id,
-card.set.name
-);
+  setStatus(
+    "Ready. Search for a " +
+    format.charAt(0).toUpperCase() +
+    format.slice(1) +
+    " card."
+  );
 
-}
-
-if (
-card.rarity
-) {
-
-rarities.add(
-card.rarity
-);
-
-}
-
-});
-
-
-const setSelect =
-document.getElementById(
-"setFilter"
-);
-
-setSelect.innerHTML =
-`
-<option value="">
-All Sets
-</option>
-`;
-
-[...sets.entries()]
-.sort(
-(a,b)=>
-a[1].localeCompare(b[1])
-)
-.forEach(
-([id,name]) => {
-
-setSelect.innerHTML +=
-`
-<option value="${esc(id)}">
-${esc(name)}
-</option>
-`;
-
-});
-
-
-const raritySelect =
-document.getElementById(
-"rarityFilter"
-);
-
-raritySelect.innerHTML =
-`
-<option value="">
-All Rarities
-</option>
-`;
-
-[...rarities]
-.sort()
-.forEach(
-rarity => {
-
-raritySelect.innerHTML +=
-`
-<option value="${esc(rarity)}">
-${esc(
-rarityDisplay(rarity)
-)}
-</option>
-`;
-
-});
-
+  searchCards(1);
 }
 
 
-function applyFilters() {
+/* =========================================================
+   STATUS
+   ========================================================= */
 
-const search =
-norm(
-document.getElementById(
-"search"
-).value
-);
+function setStatus(message, type = "") {
 
-const type =
-document.getElementById(
-"typeFilter"
-).value;
+  const box = document.getElementById("apiStatus");
 
-const rarity =
-document.getElementById(
-"rarityFilter"
-).value;
+  box.textContent = message;
 
-const set =
-document.getElementById(
-"setFilter"
-).value;
+  box.className = "status";
 
-
-filtered =
-cards.filter(card => {
-
-if (!isLegal(card))
-return false;
-
-if (
-type &&
-cardType(card) !== type
-)
-return false;
-
-if (
-rarity &&
-card.rarity !== rarity
-)
-return false;
-
-if (
-set &&
-card.set?.id !== set
-)
-return false;
-
-if (!search)
-return true;
-
-
-const searchable =
-[
-card.name,
-card.id,
-card.number,
-card.rarity,
-card.set?.name,
-card.set?.id,
-card.supertype
-]
-.join(" ");
-
-
-return norm(
-searchable
-).includes(search);
-
-});
-
-
-sortCards();
-
-page = 1;
-
-render();
-
+  if (type) {
+    box.classList.add(type);
+  }
 }
 
 
-function sortCards() {
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-const sort =
-document.getElementById(
-"sortFilter"
-).value;
+async function searchCards(page = 1) {
 
-filtered.sort(
-(a,b) => {
+  currentPage = page;
 
-if (sort === "name") {
+  const input =
+    document.getElementById("searchInput").value.trim();
 
-return a.name.localeCompare(
-b.name
-);
+  lastSearch = input;
 
+  const results =
+    document.getElementById("results");
+
+  results.innerHTML = "";
+
+  setStatus(
+    "Searching the Pokémon card database..."
+  );
+
+  try {
+
+    let queryParts = [];
+
+    /*
+      Only legal cards for the selected format.
+    */
+
+    queryParts.push(
+      `legalities.${format}:legal`
+    );
+
+
+    /*
+      Text search.
+
+      We search names, IDs, sets and card numbers
+      on the client/API instead of downloading
+      the entire database.
+    */
+
+    if (input) {
+
+      const safe = escapeQuery(input);
+
+      queryParts.push(
+        `(name:"${safe}" OR id:${safe} OR number:${safe} OR set.name:"${safe}")`
+      );
+    }
+
+
+    /*
+      Type filter.
+    */
+
+    const type =
+      document.getElementById("typeFilter").value;
+
+    if (type) {
+
+      if (type === "Pokémon") {
+        queryParts.push("supertype:Pokémon");
+      }
+
+      if (type === "Trainer") {
+        queryParts.push("supertype:Trainer");
+      }
+
+      if (type === "Energy") {
+        queryParts.push("supertype:Energy");
+      }
+    }
+
+
+    /*
+      Rarity.
+    */
+
+    const rarity =
+      document.getElementById("rarityFilter").value;
+
+    if (rarity) {
+
+      queryParts.push(
+        `rarity:"${escapeQuery(rarity)}"`
+      );
+    }
+
+
+    /*
+      Set.
+    */
+
+    const set =
+      document.getElementById("setFilter").value;
+
+    if (set) {
+
+      queryParts.push(
+        `set.id:${escapeQuery(set)}`
+      );
+    }
+
+
+    const order =
+      document.getElementById("sortFilter").value;
+
+
+    const url =
+      API +
+      "/cards?page=" +
+      page +
+      "&pageSize=60" +
+      "&q=" +
+      encodeURIComponent(
+        queryParts.join(" ")
+      ) +
+      "&orderBy=" +
+      encodeURIComponent(order);
+
+
+    const response =
+      await fetch(url, {
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+
+    if (!response.ok) {
+      throw new Error(
+        "API error " + response.status
+      );
+    }
+
+
+    const json =
+      await response.json();
+
+
+    lastTotal =
+      json.totalCount || 0;
+
+
+    if (!json.data || json.data.length === 0) {
+
+      setStatus(
+        "No cards found. Try a different search.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    setStatus(
+      `${lastTotal.toLocaleString()} matching cards found.`,
+      "success"
+    );
+
+
+    renderCards(json.data);
+
+
+    document.getElementById("pageText").textContent =
+      `Page ${json.page} of ${Math.ceil(
+        json.totalCount / json.pageSize
+      )}`;
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    setStatus(
+      "Card database could not be reached. " +
+      "Your app is still working — check your internet connection and try again.",
+      "error"
+    );
+  }
 }
 
 
-if (sort === "rarity") {
+/* =========================================================
+   QUERY ESCAPING
+   ========================================================= */
 
-return String(
-a.rarity || ""
-).localeCompare(
-String(b.rarity || "")
-);
+function escapeQuery(value) {
 
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/[{}[\]]/g, "");
 }
 
 
-const setCompare =
-String(
-a.set?.id || ""
-).localeCompare(
-String(b.set?.id || "")
-);
+/* =========================================================
+   RENDER CARDS
+   ========================================================= */
 
-if (setCompare !== 0)
-return setCompare;
+function renderCards(cards) {
 
+  const container =
+    document.getElementById("results");
 
-return String(
-a.number || ""
-).localeCompare(
-String(b.number || ""),
-undefined,
-{
-numeric:true
-}
-);
-
-});
-
-}
+  container.innerHTML = "";
 
 
-function render() {
+  cards.forEach(card => {
 
-const results =
-document.getElementById(
-"results"
-);
+    const div =
+      document.createElement("div");
 
-const start =
-(page - 1) *
-PAGE_SIZE;
-
-const visible =
-filtered.slice(
-start,
-start + PAGE_SIZE
-);
+    div.className = "card";
 
 
-let html = `
-
-<div class="status info">
-
-<strong>
-${filtered.length.toLocaleString()}
-cards found
-</strong>
-
-Showing
-${filtered.length ?
-start + 1 :
-0}
--
-${Math.min(
-start + visible.length,
-filtered.length
-)}
-
-</div>
-
-`;
+    const image =
+      card.images?.small ||
+      card.images?.large ||
+      "";
 
 
-html +=
-`<div class="card-grid">`;
+    div.innerHTML = `
+
+      <img
+        src="${image}"
+        alt="${escapeHTML(card.name)}"
+        loading="lazy"
+      >
+
+      <div class="card-body">
+
+        <div class="card-name">
+          ${escapeHTML(card.name)}
+        </div>
+
+        <div class="card-meta">
+          ${escapeHTML(card.set?.name || "")}
+        </div>
+
+        <div class="card-meta">
+          ${escapeHTML(card.set?.id || "")}
+          • #${escapeHTML(card.number || "")}
+        </div>
+
+        <div class="card-meta">
+          ${escapeHTML(card.rarity || "Unknown")}
+        </div>
+
+        <div class="card-meta">
+          ID: ${escapeHTML(card.id || "")}
+        </div>
+
+        <div class="card-buttons">
+
+          <button
+            onclick='addCard(${JSON.stringify(card).replace(/'/g, "&#39;")})'>
+            + Add
+          </button>
+
+          <button
+            onclick='showCardInfo(${JSON.stringify(card).replace(/'/g, "&#39;")})'>
+            Info
+          </button>
+
+        </div>
+
+      </div>
+    `;
 
 
-visible.forEach(card => {
+    container.appendChild(div);
 
-const image =
-card.images?.small ||
-card.images?.large ||
-"";
-
-
-html +=
-`
-
-<div class="card">
-
-<img
-src="${esc(image)}"
-alt="${esc(card.name)}"
-loading="lazy"
->
-
-<div class="card-body">
-
-<div class="card-name">
-${esc(card.name)}
-</div>
-
-<div class="meta">
-
-Set:
-<b>
-${esc(card.set?.name || "")}
-</b>
-
-<br>
-
-Set ID:
-<b>
-${esc(card.set?.id || "")}
-</b>
-
-<br>
-
-Number:
-<b>
-${esc(card.number || "")}
-</b>
-
-<br>
-
-Card ID:
-<b>
-${esc(card.id || "")}
-</b>
-
-<br>
-
-Type:
-${esc(cardType(card))}
-
-</div>
-
-<span class="rarity">
-${esc(
-rarityDisplay(
-card.rarity
-)
-)}
-</span>
-
-<div class="card-actions">
-
-<button
-onclick='addCard(${JSON.stringify(card)})'
->
-+ Deck
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-
-html +=
-`</div>`;
-
-results.innerHTML =
-html;
-
-
-const totalPages =
-Math.max(
-1,
-Math.ceil(
-filtered.length /
-PAGE_SIZE
-)
-);
-
-document.getElementById(
-"pageNumber"
-).textContent =
-`Page ${page} / ${totalPages}`;
-
+  });
 }
 
+
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+
+/* =========================================================
+   CARD INFORMATION
+   ========================================================= */
+
+function showCardInfo(card) {
+
+  const legality =
+    card.legalities || {};
+
+  alert(
+    `${card.name}\n\n` +
+    `Set: ${card.set?.name || "Unknown"}\n` +
+    `Set ID: ${card.set?.id || "Unknown"}\n` +
+    `Number: ${card.number || "Unknown"}\n` +
+    `Card ID: ${card.id || "Unknown"}\n` +
+    `Rarity: ${card.rarity || "Unknown"}\n\n` +
+    `Standard: ${legality.standard || "Not listed"}\n` +
+    `Expanded: ${legality.expanded || "Not listed"}`
+  );
+}
+
+
+/* =========================================================
+   DECK MANAGEMENT
+   ========================================================= */
 
 function addCard(card) {
 
-const id =
-card.id;
+  if (getDeckTotal() >= 60) {
 
-if (!deck[id]) {
+    alert(
+      "Your deck already contains 60 cards."
+    );
 
-deck[id] = {
-card:card,
-quantity:0
-};
+    return;
+  }
 
+
+  /*
+    Pokémon TCG deck rule:
+
+    Normally no more than four cards with
+    the same name, except Basic Energy.
+
+    We enforce the basic rule here.
+  */
+
+  const isBasicEnergy =
+    card.supertype === "Energy" &&
+    (
+      !card.subtypes ||
+      card.subtypes.includes("Basic")
+    );
+
+
+  const existing =
+    deck.find(
+      x => x.card.id === card.id
+    );
+
+
+  const sameName =
+    deck
+      .filter(x => x.card.name === card.name)
+      .reduce(
+        (sum, x) => sum + x.quantity,
+        0
+      );
+
+
+  if (!isBasicEnergy && sameName >= 4) {
+
+    alert(
+      "You cannot have more than 4 copies of " +
+      card.name +
+      " in the deck."
+    );
+
+    return;
+  }
+
+
+  if (existing) {
+
+    existing.quantity++;
+
+  } else {
+
+    deck.push({
+      card: card,
+      quantity: 1
+    });
+
+  }
+
+
+  saveDeck();
+
+  renderDeck();
+
+  updateStats();
+
+  showPage("deck");
 }
 
 
-if (
-deck[id].quantity >= 4
-) {
-
-alert(
-"Maximum 4 copies of this card."
-);
-
-return;
-
-}
-
-
-deck[id].quantity++;
-
-updateDeck();
-
-}
-
+/* =========================================================
+   REMOVE CARD
+   ========================================================= */
 
 function removeCard(id) {
 
-if (!deck[id])
-return;
+  const item =
+    deck.find(x => x.card.id === id);
 
-deck[id].quantity--;
+  if (!item) return;
 
-if (
-deck[id].quantity <= 0
-) {
+  item.quantity--;
 
-delete deck[id];
+  if (item.quantity <= 0) {
 
+    deck =
+      deck.filter(
+        x => x.card.id !== id
+      );
+  }
+
+  saveDeck();
+
+  renderDeck();
+
+  updateStats();
 }
 
-updateDeck();
 
+/* =========================================================
+   TOTAL
+   ========================================================= */
+
+function getDeckTotal() {
+
+  return deck.reduce(
+    (sum, item) =>
+      sum + item.quantity,
+    0
+  );
 }
 
 
-function updateDeck() {
-
-let total = 0;
-let pokemon = 0;
-let trainer = 0;
-let energy = 0;
-
-
-Object.values(deck)
-.forEach(row => {
-
-total += row.quantity;
-
-const type =
-cardType(row.card);
-
-if (type === "Pokémon")
-pokemon += row.quantity;
-
-if (type === "Trainer")
-trainer += row.quantity;
-
-if (type === "Energy")
-energy += row.quantity;
-
-});
-
-
-document.getElementById(
-"deckCount"
-).textContent = total;
-
-document.getElementById(
-"pokemonCount"
-).textContent = pokemon;
-
-document.getElementById(
-"trainerCount"
-).textContent = trainer;
-
-document.getElementById(
-"energyCount"
-).textContent = energy;
-
-
-document.getElementById(
-"sCards"
-).textContent = total;
-
-document.getElementById(
-"sPokemon"
-).textContent = pokemon;
-
-document.getElementById(
-"sTrainer"
-).textContent = trainer;
-
-document.getElementById(
-"sEnergy"
-).textContent = energy;
-
-
-renderDeck();
-
-validateDeck();
-
-}
-
+/* =========================================================
+   RENDER DECK
+   ========================================================= */
 
 function renderDeck() {
 
-const element =
-document.getElementById(
-"deckList"
-);
+  const total =
+    getDeckTotal();
 
-const rows =
-Object.values(deck);
+  document.getElementById(
+    "deckCount"
+  ).textContent =
+    `${total} / 60 cards`;
 
 
-if (!rows.length) {
+  document.getElementById(
+    "deckProgress"
+  ).style.width =
+    Math.min(
+      100,
+      (total / 60) * 100
+    ) + "%";
 
-element.innerHTML =
-`
-<div class="loading">
-No cards in your deck yet.
-</div>
-`;
 
-return;
+  const warning =
+    document.getElementById(
+      "deckWarning"
+    );
 
+
+  if (total === 0) {
+
+    warning.textContent =
+      "Your deck is empty.";
+
+  } else if (total < 60) {
+
+    warning.textContent =
+      `${60 - total} cards remaining.`;
+
+  } else {
+
+    warning.textContent =
+      "Deck contains 60 cards.";
+
+    warning.classList.add(
+      "success"
+    );
+  }
+
+
+  const list =
+    document.getElementById(
+      "deckList"
+    );
+
+  list.innerHTML = "";
+
+
+  deck
+    .slice()
+    .sort(
+      (a,b) =>
+        a.card.name.localeCompare(
+          b.card.name
+        )
+    )
+    .forEach(item => {
+
+      const card =
+        item.card;
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "deck-item";
+
+
+      row.innerHTML = `
+
+        <img
+          src="${card.images?.small || ""}"
+          alt=""
+        >
+
+        <div>
+
+          <div class="deck-name">
+            ${escapeHTML(card.name)}
+          </div>
+
+          <div class="deck-info">
+            ${escapeHTML(card.set?.name || "")}
+            • ${escapeHTML(card.set?.id || "")}
+            • #${escapeHTML(card.number || "")}
+          </div>
+
+          <div class="deck-info">
+            ${escapeHTML(card.id || "")}
+          </div>
+
+        </div>
+
+        <div>
+
+          <div class="qty">
+            ×${item.quantity}
+          </div>
+
+          <button
+            class="danger"
+            onclick="removeCard('${card.id}')">
+            −
+          </button>
+
+        </div>
+
+      `;
+
+      list.appendChild(row);
+
+    });
 }
 
 
-element.innerHTML =
-rows
-.sort(
-(a,b)=>
-a.card.name.localeCompare(
-b.card.name
-)
-)
-.map(row =>
-`
+/* =========================================================
+   CLEAR
+   ========================================================= */
 
-<div class="deck-row">
+function clearDeck() {
 
-<img
-src="${esc(
-row.card.images?.small || ""
-)}"
->
+  if (!deck.length) return;
 
-<div class="deck-info">
+  if (
+    !confirm(
+      "Clear your entire deck?"
+    )
+  ) return;
 
-<div class="deck-name">
-${row.quantity}×
-${esc(row.card.name)}
-</div>
+  deck = [];
 
-<div class="deck-meta">
+  saveDeck();
 
-${esc(
-row.card.set?.name || ""
-)}
+  renderDeck();
 
-•
-
-${esc(
-row.card.set?.id || ""
-)}
-
-•
-
-${esc(
-row.card.number || ""
-)}
-
-</div>
-
-</div>
-
-<div class="qty">
-
-<button
-onclick='removeCard(${JSON.stringify(row.card.id)})'
->
-−
-</button>
-
-<b>
-${row.quantity}
-</b>
-
-<button
-onclick='addCard(${JSON.stringify(row.card)})'
->
-+
-</button>
-
-</div>
-
-</div>
-
-`
-)
-.join("");
-
+  updateStats();
 }
 
 
-function validateDeck() {
+/* =========================================================
+   LOCAL STORAGE
+   ========================================================= */
 
-const total =
-Object.values(deck)
-.reduce(
-(sum,row)=>
-sum + row.quantity,
-0
-);
+function saveDeck() {
 
-const element =
-document.getElementById(
-"validation"
-);
-
-
-if (total === 60) {
-
-element.innerHTML =
-`
-<div class="status success">
-
-<strong>
-✓ 60-card deck
-</strong>
-
-Your deck has exactly 60 cards.
-
-</div>
-`;
-
-}
-else {
-
-element.innerHTML =
-`
-<div class="status info">
-
-<strong>
-${total}/60 cards
-</strong>
-
-${
-total < 60
-?
-`${60-total} more cards needed.`
-:
-`${total-60} cards over 60.`
+  localStorage.setItem(
+    "pokemonDeckLabDeck",
+    JSON.stringify(deck)
+  );
 }
 
-</div>
-`;
 
+function loadDeck() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "pokemonDeckLabDeck"
+      );
+
+    if (saved) {
+
+      deck =
+        JSON.parse(saved);
+    }
+
+  } catch(e) {
+
+    deck = [];
+  }
+
+  renderDeck();
 }
 
+
+/* =========================================================
+   EXPORT
+   ========================================================= */
+
+function exportDeck() {
+
+  if (!deck.length) {
+
+    alert("Your deck is empty.");
+
+    return;
+  }
+
+
+  let output =
+    "Pokémon Deck Lab\n\n";
+
+
+  deck.forEach(item => {
+
+    output +=
+      `${item.quantity} ${item.card.name}` +
+      ` ${item.card.set?.id || ""}` +
+      ` ${item.card.number || ""}\n`;
+
+  });
+
+
+  output +=
+    `\nTotal: ${getDeckTotal()}/60`;
+
+
+  navigator.clipboard
+    .writeText(output)
+    .then(() => {
+
+      alert(
+        "Deck copied to your clipboard."
+      );
+
+    })
+    .catch(() => {
+
+      prompt(
+        "Copy your deck:",
+        output
+      );
+
+    });
+}
+
+
+/* =========================================================
+   IMPORT DECK
+   ========================================================= */
+
+async function importDeck() {
+
+  const text =
+    document.getElementById(
+      "importText"
+    ).value.trim();
+
+
+  if (!text) {
+
+    alert(
+      "Paste a deck list first."
+    );
+
+    return;
+  }
+
+
+  const status =
+    document.getElementById(
+      "importStatus"
+    );
+
+
+  status.className =
+    "status";
+
+
+  status.textContent =
+    "Reading deck list...";
+
+
+  /*
+    Examples accepted:
+
+    4 Charizard ex
+    4x Charizard ex
+    Charizard ex x4
+
+    Optional:
+    set ID + number
+  */
+
+
+  const lines =
+    text.split(/\r?\n/);
+
+
+  const entries = [];
+
+
+  for (
+    const originalLine of lines
+  ) {
+
+    let line =
+      originalLine.trim();
+
+
+    if (!line) continue;
+
+
+    /*
+      Ignore headings.
+    */
+
+    if (
+      /^(pokemon|trainer|trainers|energy|pokémon)\s*[-:]/i
+        .test(line)
+    ) {
+      continue;
+    }
+
+
+    /*
+      Ignore total lines.
+    */
+
+    if (
+      /^total/i.test(line)
+    ) {
+      continue;
+    }
+
+
+    let quantity = 1;
+
+    let name = line;
+
+
+    let match =
+      line.match(
+        /^(\d+)\s*x?\s+(.+?)$/i
+      );
+
+
+    if (match) {
+
+      quantity =
+        parseInt(match[1], 10);
+
+      name =
+        match[2].trim();
+
+    } else {
+
+      match =
+        line.match(
+          /^(.+?)\s+x(\d+)$/i
+        );
+
+      if (match) {
+
+        name =
+          match[1].trim();
+
+        quantity =
+          parseInt(match[2], 10);
+      }
+    }
+
+
+    if (!name) continue;
+
+
+    entries.push({
+      name,
+      quantity
+    });
+
+  }
+
+
+  if (!entries.length) {
+
+    status.classList.add("error");
+
+    status.textContent =
+      "No cards could be read from the list.";
+
+    return;
+  }
+
+
+  let added = 0;
+  let notFound = [];
+
+
+  for (
+    const entry of entries
+  ) {
+
+    try {
+
+      const query =
+        `legalities.${format}:legal name:"${escapeQuery(entry.name)}"`;
+
+
+      const url =
+        API +
+        "/cards?page=1&pageSize=10&q=" +
+        encodeURIComponent(query);
+
+
+      const response =
+        await fetch(url);
+
+
+      if (!response.ok) {
+        throw new Error(
+          "HTTP " + response.status
+        );
+      }
+
+
+      const json =
+        await response.json();
+
+
+      let card =
+        json.data?.[0];
+
+
+      /*
+        If exact legal name wasn't found,
+        search more broadly.
+      */
+
+      if (!card) {
+
+        const fallbackQuery =
+          `legalities.${format}:legal name:${escapeQuery(entry.name)}`;
+
+
+        const fallbackURL =
+          API +
+          "/cards?page=1&pageSize=10&q=" +
+          encodeURIComponent(
+            fallbackQuery
+          );
+
+
+        const fallbackResponse =
+          await fetch(fallbackURL);
+
+
+        if (
+          fallbackResponse.ok
+        ) {
+
+          const fallback =
+            await fallbackResponse.json();
+
+          card =
+            fallback.data?.[0];
+        }
+      }
+
+
+      if (!card) {
+
+        notFound.push(
+          `${entry.quantity} ${entry.name}`
+        );
+
+        continue;
+      }
+
+
+      /*
+        Add quantity while respecting
+        the four-copy rule.
+      */
+
+      for (
+        let i = 0;
+        i < entry.quantity;
+        i++
+      ) {
+
+        if (getDeckTotal() >= 60) break;
+
+        addCardWithoutNavigation(card);
+
+        added++;
+      }
+
+
+    } catch(error) {
+
+      console.error(error);
+
+      notFound.push(
+        `${entry.quantity} ${entry.name}`
+      );
+
+    }
+
+  }
+
+
+  saveDeck();
+
+  renderDeck();
+
+  updateStats();
+
+
+  let message =
+    `Imported ${added} cards.`;
+
+  if (notFound.length) {
+
+    message +=
+      `\n\nCards not found:\n` +
+      notFound.join("\n");
+  }
+
+
+  status.classList.add(
+    notFound.length
+      ? "error"
+      : "success"
+  );
+
+  status.textContent =
+    message;
 }
 
 
 /*
-IMPORT
+  Add imported card without navigating
+  to Deck Builder every time.
 */
 
-function parseDeckLine(line) {
+function addCardWithoutNavigation(card) {
 
-line =
-line.trim();
+  const isBasicEnergy =
+    card.supertype === "Energy" &&
+    (
+      !card.subtypes ||
+      card.subtypes.includes("Basic")
+    );
 
-if (!line)
-return null;
+
+  const sameName =
+    deck
+      .filter(
+        x => x.card.name === card.name
+      )
+      .reduce(
+        (sum, x) =>
+          sum + x.quantity,
+        0
+      );
 
 
-/*
-4 Charizard ex MEG 125
-4 Ultra Ball SVI 196
-*/
+  if (
+    !isBasicEnergy &&
+    sameName >= 4
+  ) {
+    return;
+  }
 
-let match =
-line.match(
-/^(\\d+)\\s+(.+?)\\s+([A-Za-z0-9-]+)\\s+(\\d+(?:\\/\\d+)?)$/
-);
 
-if (match) {
+  const existing =
+    deck.find(
+      x => x.card.id === card.id
+    );
 
-return {
 
-quantity:
-parseInt(
-match[1],
-10
-),
+  if (existing) {
 
-name:
-match[2].trim(),
+    existing.quantity++;
 
-set:
-match[3],
+  } else {
 
-number:
-match[4].split("/")[0]
+    deck.push({
+      card: card,
+      quantity: 1
+    });
 
-};
+  }
+}
+
+
+/* =========================================================
+   EXAMPLE IMPORT
+   ========================================================= */
+
+function loadExample() {
+
+  document.getElementById(
+    "importText"
+  ).value =
+`Pokémon - 12
+4 Charizard ex
+4 Charmander
+4 Pidgeot ex
+
+Trainer - 32
+4 Ultra Ball
+4 Nest Ball
+4 Professor's Research
+4 Boss's Orders
+
+Energy - 16
+16 Fire Energy`;
 
 }
 
 
-/*
-Energy without set/number
-*/
+/* =========================================================
+   STATS
+   ========================================================= */
 
-match =
-line.match(
-/^(\\d+)\\s+(.+)$/
-);
+function updateStats() {
 
-if (match) {
+  let pokemon = 0;
+  let trainer = 0;
+  let energy = 0;
 
-return {
 
-quantity:
-parseInt(
-match[1],
-10
-),
+  deck.forEach(item => {
 
-name:
-match[2].trim()
+    if (
+      item.card.supertype === "Pokémon"
+    ) {
+      pokemon += item.quantity;
+    }
 
-};
+    else if (
+      item.card.supertype === "Trainer"
+    ) {
+      trainer += item.quantity;
+    }
 
+    else if (
+      item.card.supertype === "Energy"
+    ) {
+      energy += item.quantity;
+    }
+
+  });
+
+
+  document.getElementById(
+    "pokemonCount"
+  ).textContent = pokemon;
+
+
+  document.getElementById(
+    "trainerCount"
+  ).textContent = trainer;
+
+
+  document.getElementById(
+    "energyCount"
+  ).textContent = energy;
+
+
+  document.getElementById(
+    "uniqueCount"
+  ).textContent = deck.length;
 }
 
 
-return null;
+/* =========================================================
+   SET LIST
+   ========================================================= */
 
+async function loadSets() {
+
+  const select =
+    document.getElementById(
+      "setFilter"
+    );
+
+
+  try {
+
+    const response =
+      await fetch(
+        API +
+        "/sets?page=1&pageSize=250"
+      );
+
+
+    if (!response.ok) return;
+
+
+    const json =
+      await response.json();
+
+
+    const sets =
+      json.data || [];
+
+
+    sets
+      .sort(
+        (a,b) =>
+          String(b.releaseDate || "")
+            .localeCompare(
+              String(a.releaseDate || "")
+            )
+      )
+      .forEach(set => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+        option.value =
+          set.id;
+
+        option.textContent =
+          `${set.name} (${set.id})`;
+
+        select.appendChild(
+          option
+        );
+
+      });
+
+
+  } catch(error) {
+
+    console.log(
+      "Set list unavailable:",
+      error
+    );
+
+  }
 }
 
 
-function findImportedCard(item) {
+/* =========================================================
+   PAGINATION
+   ========================================================= */
 
-const wantedName =
-norm(item.name);
+function nextPage() {
 
+  const max =
+    Math.ceil(
+      lastTotal / 60
+    );
 
-/*
-1. Exact name + set + number
-*/
+  if (
+    currentPage < max
+  ) {
 
-if (
-item.set &&
-item.number
-) {
-
-const exact =
-cards.find(card =>
-
-isLegal(card) &&
-
-norm(card.name) ===
-wantedName &&
-
-norm(card.set?.id) ===
-norm(item.set) &&
-
-String(card.number) ===
-String(item.number)
-
-);
-
-
-if (exact)
-return exact;
-
+    searchCards(
+      currentPage + 1
+    );
+  }
 }
 
 
-/*
-2. Exact name + set
-*/
+function previousPage() {
 
-if (item.set) {
+  if (
+    currentPage > 1
+  ) {
 
-const setMatch =
-cards.find(card =>
-
-isLegal(card) &&
-
-norm(card.name) ===
-wantedName &&
-
-norm(card.set?.id) ===
-norm(item.set)
-
-);
-
-
-if (setMatch)
-return setMatch;
-
+    searchCards(
+      currentPage - 1
+    );
+  }
 }
 
 
-/*
-3. Exact name
-*/
+/* =========================================================
+   BATTLE
+   ========================================================= */
 
-return cards.find(card =>
+function attack() {
 
-isLegal(card) &&
+  if (
+    battle.enemyHP <= 0
+  ) return;
 
-norm(card.name) ===
-wantedName
 
-);
+  const damage =
+    Math.floor(
+      Math.random() * 30
+    ) + 20;
 
+
+  battle.enemyHP =
+    Math.max(
+      0,
+      battle.enemyHP - damage
+    );
+
+
+  battle.turn++;
+
+
+  if (
+    battle.enemyHP <= 0
+  ) {
+
+    battle.wins++;
+
+    document.getElementById(
+      "battleLog"
+    ).textContent =
+      `🔥 You dealt ${damage} damage and won!`;
+
+  } else {
+
+    const enemyDamage =
+      Math.floor(
+        Math.random() * 20
+      ) + 5;
+
+
+    battle.playerHP =
+      Math.max(
+        0,
+        battle.playerHP -
+        enemyDamage
+      );
+
+
+    document.getElementById(
+      "battleLog"
+    ).textContent =
+      `🔥 You dealt ${damage} damage. ` +
+      `Opponent dealt ${enemyDamage} damage.`;
+
+  }
+
+
+  updateBattle();
 }
 
 
-function importDeck() {
+function heal() {
 
-const text =
-document.getElementById(
-"importText"
-).value;
+  battle.playerHP =
+    Math.min(
+      100,
+      battle.playerHP + 20
+    );
 
+  battle.turn++;
 
-const lines =
-text
-.split(/\r?\n/)
-.map(parseDeckLine)
-.filter(Boolean);
+  document.getElementById(
+    "battleLog"
+  ).textContent =
+    "❤️ You healed 20 HP.";
 
-
-let found = 0;
-
-let total = 0;
-
-const missing = [];
+  updateBattle();
+}
 
 
-lines.forEach(item => {
+function resetBattle() {
 
-total += item.quantity;
+  battle.playerHP = 100;
+  battle.enemyHP = 100;
+  battle.turn = 1;
+
+  updateBattle();
+
+  document.getElementById(
+    "battleLog"
+  ).textContent =
+    "Battle reset.";
+}
 
 
-const card =
-findImportedCard(item);
+function updateBattle() {
+
+  document.getElementById(
+    "playerHP"
+  ).textContent =
+    battle.playerHP;
 
 
-if (!card) {
+  document.getElementById(
+    "enemyHP"
+  ).textContent =
+    battle.enemyHP;
 
-missing.push(
+
+  document.getElementById(
+    "turn"
+  ).textContent =
+    battle.turn;
+
+
+  document.getElementById(
+    "wins"
+  ).textContent =
+    battle.wins;
+}
+
+
+/* =========================================================
+   FILTER EVENTS
+   ========================================================= */
+
 [
-item.quantity,
-item.name,
-item.set,
-item.number
-]
-.filter(Boolean)
-.join(" ")
-);
+  "typeFilter",
+  "rarityFilter",
+  "setFilter",
+  "sortFilter"
+].forEach(id => {
 
-return;
-
-}
-
-
-for (
-let i=0;
-i<item.quantity;
-i++
-) {
-
-addCard(card);
-
-}
-
-
-found += item.quantity;
+  document
+    .getElementById(id)
+    .addEventListener(
+      "change",
+      () => searchCards(1)
+    );
 
 });
 
 
-const result =
-document.getElementById(
-"importResult"
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        searchCards(1);
+
+      }
+
+    }
+  );
+
+
+/* =========================================================
+   START APP
+   ========================================================= */
+
+loadDeck();
+
+loadSets();
+
+updateBattle();
+
+setStatus(
+  "Ready. Search for any card — the database will load only what you request."
 );
-
-
-result.innerHTML =
-`
-
-<div class="status ${
-missing.length ?
-"error" :
-"success"
-}">
-
-<strong>
-Imported ${found} of ${total} cards
-</strong>
-
-${
-missing.length
-?
-`
-<br><br>
-
-Cards not found:
-
-<br>
-
-${missing
-.map(
-item => esc(item)
-)
-.join("<br>")}
-`
-:
-"Everything was imported successfully."
-}
-
-</div>
-
-`;
-
-}
-
-
-/*
-NAVIGATION
-*/
-
-document
-.querySelectorAll(
-".nav button"
-)
-.forEach(button => {
-
-button.addEventListener(
-"click",
-() => {
-
-document
-.querySelectorAll(
-".nav button"
-)
-.forEach(
-x =>
-x.classList.remove(
-"active"
-)
-);
-
-button.classList.add(
-"active"
-);
-
-
-document
-.querySelectorAll(
-"main > section"
-)
-.forEach(
-x =>
-x.classList.add(
-"hidden"
-)
-);
-
-
-document
-.getElementById(
-button.dataset.page
-)
-.classList.remove(
-"hidden"
-);
-
-});
-
-});
-
-
-/*
-EVENTS
-*/
-
-document.getElementById(
-"standardFormat"
-).onclick =
-() => {
-
-format = "standard";
-
-document
-.getElementById(
-"standardFormat"
-)
-.classList.add("active");
-
-document
-.getElementById(
-"expandedFormat"
-)
-.classList.remove("active");
-
-applyFilters();
-
-};
-
-
-document.getElementById(
-"expandedFormat"
-).onclick =
-() => {
-
-format = "expanded";
-
-document
-.getElementById(
-"expandedFormat"
-)
-.classList.add("active");
-
-document
-.getElementById(
-"standardFormat"
-)
-.classList.remove("active");
-
-applyFilters();
-
-};
-
-
-document.getElementById(
-"reloadDatabase"
-).onclick =
-loadDatabase;
-
-
-document.getElementById(
-"search"
-).oninput =
-applyFilters;
-
-
-document.getElementById(
-"typeFilter"
-).onchange =
-applyFilters;
-
-
-document.getElementById(
-"rarityFilter"
-).onchange =
-applyFilters;
-
-
-document.getElementById(
-"setFilter"
-).onchange =
-applyFilters;
-
-
-document.getElementById(
-"sortFilter"
-).onchange =
-applyFilters;
-
-
-document.getElementById(
-"previous"
-).onclick =
-() => {
-
-if (page > 1) {
-
-page--;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-};
-
-
-document.getElementById(
-"next"
-).onclick =
-() => {
-
-const max =
-Math.max(
-1,
-Math.ceil(
-filtered.length /
-PAGE_SIZE
-)
-);
-
-if (page < max) {
-
-page++;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-};
-
-
-document.getElementById(
-"clearDeck"
-).onclick =
-() => {
-
-if (
-confirm(
-"Clear your entire deck?"
-)
-) {
-
-deck = {};
-
-updateDeck();
-
-}
-
-};
-
-
-document.getElementById(
-"importDeck"
-).onclick =
-importDeck;
-
-
-document.getElementById(
-"loadExample"
-).onclick =
-() => {
-
-document.getElementById(
-"importText"
-).value =
-`4 Charizard ex MEG 125
-2 Charmander MEG 45
-4 Ultra Ball SVI 196
-4 Nest Ball SVI 181
-2 Boss's Orders PAL 172
-10 Fire Energy`;
-
-};
-
-
-updateDeck();
-
-loadDatabase();
 
 </script>
 
