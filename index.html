@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#172033">
+
+<title>Pokémon Deck Lab</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --navy: #172033;
+  --blue: #4169d8;
+  --blue-light: #edf3ff;
+  --background: #eef1f6;
+  --white: #ffffff;
+  --text: #172033;
+  --muted: #68758d;
+  --border: #d6deeb;
+  --green: #219447;
+  --red: #d94b4b;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.header {
+  background: var(--navy);
+  color: white;
+  padding: 25px 18px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 5px 20px #0003;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  font-size: 42px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: #c7cfde;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  margin-top: 22px;
+}
+
+.nav button {
+  border: 0;
+  padding: 14px 23px;
+  border-radius: 16px;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.nav button.active {
+  background: white;
+  color: var(--navy);
+}
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding: 24px 16px 80px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 25px;
+  padding: 23px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 20px #17203312;
+}
+
+h2 {
+  margin-top: 0;
+  font-size: 30px;
+}
+
+.format-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.format {
+  border: 5px solid var(--border);
+  border-radius: 22px;
+  background: white;
+  padding: 25px;
+  text-align: left;
+}
+
+.format.active {
+  border-color: var(--blue);
+  background: var(--blue-light);
+}
+
+.format strong {
+  display: block;
+  color: #1687ee;
+  font-size: 31px;
+  margin-bottom: 8px;
+}
+
+.format span {
+  color: var(--muted);
+}
+
+.search {
+  width: 100%;
+  padding: 17px;
+  border: 3px solid var(--border);
+  border-radius: 17px;
+  outline: none;
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+select {
+  width: 100%;
+  padding: 15px;
+  border: 3px solid var(--border);
+  border-radius: 15px;
+  background: white;
+}
+
+.btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 19px;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+}
+
+.btn.green {
+  background: var(--green);
+}
+
+.btn.red {
+  background: var(--red);
+}
+
+.btn.gray {
+  background: #e7ebf3;
+  color: var(--text);
+}
+
+.status {
+  padding: 18px;
+  border-radius: 17px;
+  margin-bottom: 15px;
+}
+
+.status.info {
+  background: #eaf1ff;
+  color: #2853a9;
+}
+
+.status.success {
+  background: #e4f6eb;
+  color: #176d39;
+}
+
+.status.error {
+  background: #fde7e7;
+  color: #983636;
+}
+
+.status strong {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(210px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  overflow: hidden;
+  background: white;
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.716;
+  object-fit: contain;
+  background: #f4f5f7;
+}
+
+.card-body {
+  padding: 12px;
+}
+
+.card-name {
+  font-weight: 900;
+  font-size: 17px;
+}
+
+.meta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.rarity {
+  display: inline-block;
+  background: #edf0f5;
+  border-radius: 8px;
+  padding: 5px 8px;
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.card-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.card-actions button {
+  flex: 1;
+  border: 0;
+  padding: 9px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: white;
+  font-weight: 800;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.deck-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 8px;
+}
+
+.deck-row img {
+  width: 52px;
+  height: 70px;
+  object-fit: contain;
+}
+
+.deck-info {
+  flex: 1;
+}
+
+.deck-name {
+  font-weight: 900;
+}
+
+.deck-meta {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qty button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 9px;
+  background: #e9edf5;
+  font-weight: 900;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.stat {
+  background: #f5f7fb;
+  padding: 20px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.stat-number {
+  color: var(--blue);
+  font-size: 40px;
+  font-weight: 900;
+}
+
+.stat-label {
+  color: var(--muted);
+}
+
+textarea {
+  width: 100%;
+  min-height: 280px;
+  padding: 16px;
+  border: 3px solid var(--border);
+  border-radius: 17px;
+  resize: vertical;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--muted);
+}
+
+@media(max-width:750px) {
+  h1 {
+    font-size: 29px;
+  }
+
+  .format-grid,
+  .filters,
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media(max-width:520px) {
+  .format-grid,
+  .filters,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px;
+  }
+
+  .card-name {
+    font-size: 14px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+<div class="header-inner">
+
+<div class="title">
+
+<div class="logo">🃏</div>
+
+<div>
+
+<h1>Pokémon Deck Lab</h1>
+
+<div class="subtitle">
+All Sets • Standard • Expanded • Deck Builder
+</div>
+
+</div>
+
+</div>
+
+<nav class="nav">
+
+<button class="active" data-page="libraryPage">
+Card Library
+</button>
+
+<button data-page="deckPage">
+Deck Builder
+</button>
+
+<button data-page="importPage">
+Import
+</button>
+
+<button data-page="statsPage">
+Stats
+</button>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<main>
+
+
+<section class="panel">
+
+<h2>Card Database</h2>
+
+<div
+class="status info"
+id="databaseStatus"
+>
+
+<strong>
+Loading database...
+</strong>
+
+The app is loading the Pokémon card database.
+
+</div>
+
+
+<div class="format-grid">
+
+<button
+class="format active"
+id="standardFormat"
+>
+
+<strong>
+Standard
+</strong>
+
+<span>
+Cards legal in the current Standard format
+</span>
+
+</button>
+
+
+<button
+class="format"
+id="expandedFormat"
+>
+
+<strong>
+Expanded
+</strong>
+
+<span>
+Cards legal in Expanded
+</span>
+
+</button>
+
+</div>
+
+<br>
+
+<button
+class="btn gray"
+id="reloadDatabase"
+>
+Reload Database
+</button>
+
+</section>
+
+
+<section id="libraryPage">
+
+<div class="panel">
+
+<h2>
+Card Library
+</h2>
+
+<input
+class="search"
+id="search"
+placeholder="Search Pokémon, Trainer, Energy, set, number, rarity or card ID..."
+>
+
+<div class="filters">
+
+<select id="typeFilter">
+
+<option value="">
+All Card Types
+</option>
+
+<option value="Pokémon">
+Pokémon
+</option>
+
+<option value="Trainer">
+Trainer
+</option>
+
+<option value="Energy">
+Energy
+</option>
+
+</select>
+
+
+<select id="rarityFilter">
+
+<option value="">
+All Rarities
+</option>
+
+</select>
+
+
+<select id="setFilter">
+
+<option value="">
+All Sets
+</option>
+
+</select>
+
+
+<select id="sortFilter">
+
+<option value="set">
+Set + Number
+</option>
+
+<option value="name">
+Name
+</option>
+
+<option value="rarity">
+Rarity
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<div id="results">
+</div>
+
+<div class="pagination">
+
+<button
+class="btn gray"
+id="previous"
+>
+Previous
+</button>
+
+<span id="pageNumber">
+Page 1
+</span>
+
+<button
+class="btn gray"
+id="next"
+>
+Next
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section
+id="deckPage"
+class="hidden"
+>
+
+<div class="panel">
+
+<h2>
+Deck Builder
+</h2>
+
+<div class="stats">
+
+<div class="stat">
+<div
+class="stat-number"
+id="deckCount"
+>
+0
+</div>
+
+<div class="stat-label">
+Cards
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="pokemonCount"
+>
+0
+</div>
+
+<div class="stat-label">
+Pokémon
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="trainerCount"
+>
+0
+</div>
+
+<div class="stat-label">
+Trainer
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="energyCount"
+>
+0
+</div>
+
+<div class="stat-label">
+Energy
+</div>
+</div>
+
+</div>
+
+<br>
+
+<div id="validation">
+</div>
+
+</div>
+
+
+<div class="panel">
+
+<h2>
+Your Deck
+</h2>
+
+<div id="deckList">
+</div>
+
+<br>
+
+<button
+class="btn red"
+id="clearDeck"
+>
+Clear Deck
+</button>
+
+</div>
+
+</section>
+
+
+<section
+id="importPage"
+class="hidden"
+>
+
+<div class="panel">
+
+<h2>
+Import Deck
+</h2>
+
+<p>
+Paste a Limitless-style deck list below.
+</p>
+
+<textarea
+id="importText"
+placeholder="Example:
+
+4 Charizard ex MEG 125
+2 Charmander MEG 45
+4 Ultra Ball SVI 196
+2 Boss's Orders PAL 172
+10 Fire Energy"
+></textarea>
+
+<br>
+<br>
+
+<button
+class="btn green"
+id="importDeck"
+>
+Import Deck
+</button>
+
+<button
+class="btn gray"
+id="loadExample"
+>
+Example
+</button>
+
+<div id="importResult">
+</div>
+
+</div>
+
+</section>
+
+
+<section
+id="statsPage"
+class="hidden"
+>
+
+<div class="panel">
+
+<h2>
+Deck Statistics
+</h2>
+
+<div class="stats">
+
+<div class="stat">
+<div
+class="stat-number"
+id="sCards"
+>
+0
+</div>
+<div class="stat-label">
+Cards
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="sPokemon"
+>
+0
+</div>
+<div class="stat-label">
+Pokémon
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="sTrainer"
+>
+0
+</div>
+<div class="stat-label">
+Trainer
+</div>
+</div>
+
+
+<div class="stat">
+<div
+class="stat-number"
+id="sEnergy"
+>
+0
+</div>
+<div class="stat-label">
+Energy
+</div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+
+<script>
+
+const API =
+"https://api.pokemontcg.io/v2/cards";
+
+let cards = [];
+
+let filtered = [];
+
+let page = 1;
+
+const PAGE_SIZE = 50;
+
+let format = "standard";
+
+let deck = {};
+
+
+function norm(value) {
+
+return String(value || "")
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g, "")
+.trim();
+
+}
+
+
+function esc(value) {
+
+return String(value ?? "")
+.replaceAll("&", "&amp;")
+.replaceAll("<", "&lt;")
+.replaceAll(">", "&gt;")
+.replaceAll('"', "&quot;")
+.replaceAll("'", "&#039;");
+
+}
+
+
+/*
+Rarity display.
+
+Common       ● Black
+Uncommon     ◆ Black
+Rare         ★ Black
+Double Rare  ★★ Black
+Ultra Rare   ★★ Silver
+Illustration ★ Gold
+Special IR   ★★ Gold
+Hyper Rare   ★★★ Gold
+*/
+
+function rarityDisplay(rarity) {
+
+const r = norm(rarity);
+
+if (r.includes("hyper rare"))
+return "★★★ Gold";
+
+if (r.includes("special illustration rare"))
+return "★★ Gold";
+
+if (r.includes("illustration rare"))
+return "★ Gold";
+
+if (r.includes("ultra rare"))
+return "★★ Silver";
+
+if (r.includes("double rare"))
+return "★★ Black";
+
+if (r === "rare")
+return "★ Black";
+
+if (r.includes("uncommon"))
+return "◆ Black";
+
+if (r.includes("common"))
+return "● Black";
+
+return rarity || "Unknown";
+
+}
+
+
+function cardType(card) {
+
+if (
+card.supertype === "Trainer"
+)
+return "Trainer";
+
+if (
+card.supertype === "Energy"
+)
+return "Energy";
+
+return "Pokémon";
+
+}
+
+
+function isLegal(card) {
+
+return (
+card.legalities &&
+card.legalities[format] === true
+);
+
+}
+
+
+/*
+Some API versions use:
+
+{
+  "standard": "Legal"
+}
+
+Others may use:
+
+{
+  "standard": true
+}
+*/
+
+function isLegal(card) {
+
+const value =
+card.legalities?.[format];
+
+return (
+value === true ||
+value === "Legal"
+);
+
+}
+
+
+async function loadDatabase() {
+
+const status =
+document.getElementById(
+"databaseStatus"
+);
+
+status.className =
+"status info";
+
+status.innerHTML =
+`
+<strong>
+Loading card database...
+</strong>
+
+Downloading the complete Pokémon card database.
+`;
+
+try {
+
+const allCards = [];
+
+let currentPage = 1;
+
+while (true) {
+
+const url =
+`${API}?page=${currentPage}&pageSize=250`;
+
+const response =
+await fetch(url);
+
+if (!response.ok) {
+
+throw new Error(
+"Card API returned HTTP " +
+response.status
+);
+
+}
+
+const data =
+await response.json();
+
+if (
+!data.data ||
+!data.data.length
+) {
+break;
+}
+
+allCards.push(
+...data.data
+);
+
+if (
+data.totalCount &&
+allCards.length >=
+data.totalCount
+) {
+break;
+}
+
+currentPage++;
+
+if (currentPage > 100) {
+break;
+}
+
+}
+
+cards = allCards;
+
+populateFilters();
+
+applyFilters();
+
+status.className =
+"status success";
+
+status.innerHTML =
+`
+<strong>
+Database loaded
+</strong>
+
+${cards.length.toLocaleString()}
+cards loaded.
+`;
+
+}
+catch (error) {
+
+console.error(error);
+
+status.className =
+"status error";
+
+status.innerHTML =
+`
+<strong>
+Database failed to load
+</strong>
+
+${esc(error.message)}
+
+<br><br>
+
+Check your internet connection and press
+Reload Database.
+`;
+
+}
+
+}
+
+
+function populateFilters() {
+
+const sets =
+new Map();
+
+const rarities =
+new Set();
+
+cards.forEach(card => {
+
+if (
+card.set?.id
+) {
+
+sets.set(
+card.set.id,
+card.set.name
+);
+
+}
+
+if (
+card.rarity
+) {
+
+rarities.add(
+card.rarity
+);
+
+}
+
+});
+
+
+const setSelect =
+document.getElementById(
+"setFilter"
+);
+
+setSelect.innerHTML =
+`
+<option value="">
+All Sets
+</option>
+`;
+
+[...sets.entries()]
+.sort(
+(a,b)=>
+a[1].localeCompare(b[1])
+)
+.forEach(
+([id,name]) => {
+
+setSelect.innerHTML +=
+`
+<option value="${esc(id)}">
+${esc(name)}
+</option>
+`;
+
+});
+
+
+const raritySelect =
+document.getElementById(
+"rarityFilter"
+);
+
+raritySelect.innerHTML =
+`
+<option value="">
+All Rarities
+</option>
+`;
+
+[...rarities]
+.sort()
+.forEach(
+rarity => {
+
+raritySelect.innerHTML +=
+`
+<option value="${esc(rarity)}">
+${esc(
+rarityDisplay(rarity)
+)}
+</option>
+`;
+
+});
+
+}
+
+
+function applyFilters() {
+
+const search =
+norm(
+document.getElementById(
+"search"
+).value
+);
+
+const type =
+document.getElementById(
+"typeFilter"
+).value;
+
+const rarity =
+document.getElementById(
+"rarityFilter"
+).value;
+
+const set =
+document.getElementById(
+"setFilter"
+).value;
+
+
+filtered =
+cards.filter(card => {
+
+if (!isLegal(card))
+return false;
+
+if (
+type &&
+cardType(card) !== type
+)
+return false;
+
+if (
+rarity &&
+card.rarity !== rarity
+)
+return false;
+
+if (
+set &&
+card.set?.id !== set
+)
+return false;
+
+if (!search)
+return true;
+
+
+const searchable =
+[
+card.name,
+card.id,
+card.number,
+card.rarity,
+card.set?.name,
+card.set?.id,
+card.supertype
+]
+.join(" ");
+
+
+return norm(
+searchable
+).includes(search);
+
+});
+
+
+sortCards();
+
+page = 1;
+
+render();
+
+}
+
+
+function sortCards() {
+
+const sort =
+document.getElementById(
+"sortFilter"
+).value;
+
+filtered.sort(
+(a,b) => {
+
+if (sort === "name") {
+
+return a.name.localeCompare(
+b.name
+);
+
+}
+
+
+if (sort === "rarity") {
+
+return String(
+a.rarity || ""
+).localeCompare(
+String(b.rarity || "")
+);
+
+}
+
+
+const setCompare =
+String(
+a.set?.id || ""
+).localeCompare(
+String(b.set?.id || "")
+);
+
+if (setCompare !== 0)
+return setCompare;
+
+
+return String(
+a.number || ""
+).localeCompare(
+String(b.number || ""),
+undefined,
+{
+numeric:true
+}
+);
+
+});
+
+}
+
+
+function render() {
+
+const results =
+document.getElementById(
+"results"
+);
+
+const start =
+(page - 1) *
+PAGE_SIZE;
+
+const visible =
+filtered.slice(
+start,
+start + PAGE_SIZE
+);
+
+
+let html = `
+
+<div class="status info">
+
+<strong>
+${filtered.length.toLocaleString()}
+cards found
+</strong>
+
+Showing
+${filtered.length ?
+start + 1 :
+0}
+-
+${Math.min(
+start + visible.length,
+filtered.length
+)}
+
+</div>
+
+`;
+
+
+html +=
+`<div class="card-grid">`;
+
+
+visible.forEach(card => {
+
+const image =
+card.images?.small ||
+card.images?.large ||
+"";
+
+
+html +=
+`
+
+<div class="card">
+
+<img
+src="${esc(image)}"
+alt="${esc(card.name)}"
+loading="lazy"
+>
+
+<div class="card-body">
+
+<div class="card-name">
+${esc(card.name)}
+</div>
+
+<div class="meta">
+
+Set:
+<b>
+${esc(card.set?.name || "")}
+</b>
+
+<br>
+
+Set ID:
+<b>
+${esc(card.set?.id || "")}
+</b>
+
+<br>
+
+Number:
+<b>
+${esc(card.number || "")}
+</b>
+
+<br>
+
+Card ID:
+<b>
+${esc(card.id || "")}
+</b>
+
+<br>
+
+Type:
+${esc(cardType(card))}
+
+</div>
+
+<span class="rarity">
+${esc(
+rarityDisplay(
+card.rarity
+)
+)}
+</span>
+
+<div class="card-actions">
+
+<button
+onclick='addCard(${JSON.stringify(card)})'
+>
++ Deck
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+html +=
+`</div>`;
+
+results.innerHTML =
+html;
+
+
+const totalPages =
+Math.max(
+1,
+Math.ceil(
+filtered.length /
+PAGE_SIZE
+)
+);
+
+document.getElementById(
+"pageNumber"
+).textContent =
+`Page ${page} / ${totalPages}`;
+
+}
+
+
+function addCard(card) {
+
+const id =
+card.id;
+
+if (!deck[id]) {
+
+deck[id] = {
+card:card,
+quantity:0
+};
+
+}
+
+
+if (
+deck[id].quantity >= 4
+) {
+
+alert(
+"Maximum 4 copies of this card."
+);
+
+return;
+
+}
+
+
+deck[id].quantity++;
+
+updateDeck();
+
+}
+
+
+function removeCard(id) {
+
+if (!deck[id])
+return;
+
+deck[id].quantity--;
+
+if (
+deck[id].quantity <= 0
+) {
+
+delete deck[id];
+
+}
+
+updateDeck();
+
+}
+
+
+function updateDeck() {
+
+let total = 0;
+let pokemon = 0;
+let trainer = 0;
+let energy = 0;
+
+
+Object.values(deck)
+.forEach(row => {
+
+total += row.quantity;
+
+const type =
+cardType(row.card);
+
+if (type === "Pokémon")
+pokemon += row.quantity;
+
+if (type === "Trainer")
+trainer += row.quantity;
+
+if (type === "Energy")
+energy += row.quantity;
+
+});
+
+
+document.getElementById(
+"deckCount"
+).textContent = total;
+
+document.getElementById(
+"pokemonCount"
+).textContent = pokemon;
+
+document.getElementById(
+"trainerCount"
+).textContent = trainer;
+
+document.getElementById(
+"energyCount"
+).textContent = energy;
+
+
+document.getElementById(
+"sCards"
+).textContent = total;
+
+document.getElementById(
+"sPokemon"
+).textContent = pokemon;
+
+document.getElementById(
+"sTrainer"
+).textContent = trainer;
+
+document.getElementById(
+"sEnergy"
+).textContent = energy;
+
+
+renderDeck();
+
+validateDeck();
+
+}
+
+
+function renderDeck() {
+
+const element =
+document.getElementById(
+"deckList"
+);
+
+const rows =
+Object.values(deck);
+
+
+if (!rows.length) {
+
+element.innerHTML =
+`
+<div class="loading">
+No cards in your deck yet.
+</div>
+`;
+
+return;
+
+}
+
+
+element.innerHTML =
+rows
+.sort(
+(a,b)=>
+a.card.name.localeCompare(
+b.card.name
+)
+)
+.map(row =>
+`
+
+<div class="deck-row">
+
+<img
+src="${esc(
+row.card.images?.small || ""
+)}"
+>
+
+<div class="deck-info">
+
+<div class="deck-name">
+${row.quantity}×
+${esc(row.card.name)}
+</div>
+
+<div class="deck-meta">
+
+${esc(
+row.card.set?.name || ""
+)}
+
+•
+
+${esc(
+row.card.set?.id || ""
+)}
+
+•
+
+${esc(
+row.card.number || ""
+)}
+
+</div>
+
+</div>
+
+<div class="qty">
+
+<button
+onclick='removeCard(${JSON.stringify(row.card.id)})'
+>
+−
+</button>
+
+<b>
+${row.quantity}
+</b>
+
+<button
+onclick='addCard(${JSON.stringify(row.card)})'
+>
++
+</button>
+
+</div>
+
+</div>
+
+`
+)
+.join("");
+
+}
+
+
+function validateDeck() {
+
+const total =
+Object.values(deck)
+.reduce(
+(sum,row)=>
+sum + row.quantity,
+0
+);
+
+const element =
+document.getElementById(
+"validation"
+);
+
+
+if (total === 60) {
+
+element.innerHTML =
+`
+<div class="status success">
+
+<strong>
+✓ 60-card deck
+</strong>
+
+Your deck has exactly 60 cards.
+
+</div>
+`;
+
+}
+else {
+
+element.innerHTML =
+`
+<div class="status info">
+
+<strong>
+${total}/60 cards
+</strong>
+
+${
+total < 60
+?
+`${60-total} more cards needed.`
+:
+`${total-60} cards over 60.`
+}
+
+</div>
+`;
+
+}
+
+}
+
+
+/*
+IMPORT
+*/
+
+function parseDeckLine(line) {
+
+line =
+line.trim();
+
+if (!line)
+return null;
+
+
+/*
+4 Charizard ex MEG 125
+4 Ultra Ball SVI 196
+*/
+
+let match =
+line.match(
+/^(\\d+)\\s+(.+?)\\s+([A-Za-z0-9-]+)\\s+(\\d+(?:\\/\\d+)?)$/
+);
+
+if (match) {
+
+return {
+
+quantity:
+parseInt(
+match[1],
+10
+),
+
+name:
+match[2].trim(),
+
+set:
+match[3],
+
+number:
+match[4].split("/")[0]
+
+};
+
+}
+
+
+/*
+Energy without set/number
+*/
+
+match =
+line.match(
+/^(\\d+)\\s+(.+)$/
+);
+
+if (match) {
+
+return {
+
+quantity:
+parseInt(
+match[1],
+10
+),
+
+name:
+match[2].trim()
+
+};
+
+}
+
+
+return null;
+
+}
+
+
+function findImportedCard(item) {
+
+const wantedName =
+norm(item.name);
+
+
+/*
+1. Exact name + set + number
+*/
+
+if (
+item.set &&
+item.number
+) {
+
+const exact =
+cards.find(card =>
+
+isLegal(card) &&
+
+norm(card.name) ===
+wantedName &&
+
+norm(card.set?.id) ===
+norm(item.set) &&
+
+String(card.number) ===
+String(item.number)
+
+);
+
+
+if (exact)
+return exact;
+
+}
+
+
+/*
+2. Exact name + set
+*/
+
+if (item.set) {
+
+const setMatch =
+cards.find(card =>
+
+isLegal(card) &&
+
+norm(card.name) ===
+wantedName &&
+
+norm(card.set?.id) ===
+norm(item.set)
+
+);
+
+
+if (setMatch)
+return setMatch;
+
+}
+
+
+/*
+3. Exact name
+*/
+
+return cards.find(card =>
+
+isLegal(card) &&
+
+norm(card.name) ===
+wantedName
+
+);
+
+}
+
+
+function importDeck() {
+
+const text =
+document.getElementById(
+"importText"
+).value;
+
+
+const lines =
+text
+.split(/\r?\n/)
+.map(parseDeckLine)
+.filter(Boolean);
+
+
+let found = 0;
+
+let total = 0;
+
+const missing = [];
+
+
+lines.forEach(item => {
+
+total += item.quantity;
+
+
+const card =
+findImportedCard(item);
+
+
+if (!card) {
+
+missing.push(
+[
+item.quantity,
+item.name,
+item.set,
+item.number
+]
+.filter(Boolean)
+.join(" ")
+);
+
+return;
+
+}
+
+
+for (
+let i=0;
+i<item.quantity;
+i++
+) {
+
+addCard(card);
+
+}
+
+
+found += item.quantity;
+
+});
+
+
+const result =
+document.getElementById(
+"importResult"
+);
+
+
+result.innerHTML =
+`
+
+<div class="status ${
+missing.length ?
+"error" :
+"success"
+}">
+
+<strong>
+Imported ${found} of ${total} cards
+</strong>
+
+${
+missing.length
+?
+`
+<br><br>
+
+Cards not found:
+
+<br>
+
+${missing
+.map(
+item => esc(item)
+)
+.join("<br>")}
+`
+:
+"Everything was imported successfully."
+}
+
+</div>
+
+`;
+
+}
+
+
+/*
+NAVIGATION
+*/
+
+document
+.querySelectorAll(
+".nav button"
+)
+.forEach(button => {
+
+button.addEventListener(
+"click",
+() => {
+
+document
+.querySelectorAll(
+".nav button"
+)
+.forEach(
+x =>
+x.classList.remove(
+"active"
+)
+);
+
+button.classList.add(
+"active"
+);
+
+
+document
+.querySelectorAll(
+"main > section"
+)
+.forEach(
+x =>
+x.classList.add(
+"hidden"
+)
+);
+
+
+document
+.getElementById(
+button.dataset.page
+)
+.classList.remove(
+"hidden"
+);
+
+});
+
+});
+
+
+/*
+EVENTS
+*/
+
+document.getElementById(
+"standardFormat"
+).onclick =
+() => {
+
+format = "standard";
+
+document
+.getElementById(
+"standardFormat"
+)
+.classList.add("active");
+
+document
+.getElementById(
+"expandedFormat"
+)
+.classList.remove("active");
+
+applyFilters();
+
+};
+
+
+document.getElementById(
+"expandedFormat"
+).onclick =
+() => {
+
+format = "expanded";
+
+document
+.getElementById(
+"expandedFormat"
+)
+.classList.add("active");
+
+document
+.getElementById(
+"standardFormat"
+)
+.classList.remove("active");
+
+applyFilters();
+
+};
+
+
+document.getElementById(
+"reloadDatabase"
+).onclick =
+loadDatabase;
+
+
+document.getElementById(
+"search"
+).oninput =
+applyFilters;
+
+
+document.getElementById(
+"typeFilter"
+).onchange =
+applyFilters;
+
+
+document.getElementById(
+"rarityFilter"
+).onchange =
+applyFilters;
+
+
+document.getElementById(
+"setFilter"
+).onchange =
+applyFilters;
+
+
+document.getElementById(
+"sortFilter"
+).onchange =
+applyFilters;
+
+
+document.getElementById(
+"previous"
+).onclick =
+() => {
+
+if (page > 1) {
+
+page--;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+};
+
+
+document.getElementById(
+"next"
+).onclick =
+() => {
+
+const max =
+Math.max(
+1,
+Math.ceil(
+filtered.length /
+PAGE_SIZE
+)
+);
+
+if (page < max) {
+
+page++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+};
+
+
+document.getElementById(
+"clearDeck"
+).onclick =
+() => {
+
+if (
+confirm(
+"Clear your entire deck?"
+)
+) {
+
+deck = {};
+
+updateDeck();
+
+}
+
+};
+
+
+document.getElementById(
+"importDeck"
+).onclick =
+importDeck;
+
+
+document.getElementById(
+"loadExample"
+).onclick =
+() => {
+
+document.getElementById(
+"importText"
+).value =
+`4 Charizard ex MEG 125
+2 Charmander MEG 45
+4 Ultra Ball SVI 196
+4 Nest Ball SVI 181
+2 Boss's Orders PAL 172
+10 Fire Energy`;
+
+};
+
+
+updateDeck();
+
+loadDatabase();
+
+</script>
+
+</body>
+</html>
